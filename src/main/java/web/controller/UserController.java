@@ -1,0 +1,69 @@
+package web.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import web.model.User;
+import web.service.UserService;
+
+@Controller
+public class UserController {
+
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/")
+    public String users(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "list";
+    }
+
+    @GetMapping("/{id}")
+    public String getUser(@PathVariable("id") long id, Model model) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return "redirect:/users";
+        }
+        model.addAttribute("user", user);
+        return "users/show";
+    }
+
+    @GetMapping("/new")
+    public String newUserForm(Model model) {
+        model.addAttribute("user", new User());
+        return "users/new";
+    }
+
+    @PostMapping("/new")
+    public String createUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editUserForm(@PathVariable("id") long id, Model model) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return "redirect:/users";
+        }
+        model.addAttribute("user", user);
+        return "users/edit";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String updateUser(@PathVariable("id") long id, @ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/users";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteUser(@PathVariable("id") long id) {
+        userService.deleteUser(id);
+        return "redirect:/users";
+    }
+}
