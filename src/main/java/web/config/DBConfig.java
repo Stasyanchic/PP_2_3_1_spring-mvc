@@ -27,12 +27,11 @@ public class DBConfig {
     @Resource
     private Environment env;
 
-
     @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource());
-        emf.setPackagesToScan(env.getProperty("db.entity.package","web.model"));
+        emf.setPackagesToScan(env.getProperty("db.entity.package", "web.model"));
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         emf.setJpaProperties(getHibernateProperties());
         return emf;
@@ -48,11 +47,10 @@ public class DBConfig {
         return dataSource;
     }
 
-
     public Properties getHibernateProperties() {
         try {
-        Properties properties = new Properties();
-        InputStream is = getClass().getClassLoader().getResourceAsStream("hibernate.properties");
+            Properties properties = new Properties();
+            InputStream is = getClass().getClassLoader().getResourceAsStream("db.properties");
             properties.load(is);
 
             return properties;

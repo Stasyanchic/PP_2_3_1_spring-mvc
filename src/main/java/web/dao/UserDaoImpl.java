@@ -4,13 +4,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.springframework.stereotype.Component;
+
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
 import java.util.List;
 
-@Component
+@Repository
 @Transactional
 public class UserDaoImpl implements UserDao {
 
@@ -29,18 +30,22 @@ public class UserDaoImpl implements UserDao {
         return entityManager.find(User.class, id);
     }
 
+
     @Override
-    public void saveUser(User user) {
-        if (user.getId() == 0) {
-            entityManager.persist(user);
-        } else entityManager.merge(user);
+    public void createUser(User user) {
+        entityManager.persist(user);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return entityManager.merge(user);
     }
 
     @Override
     public void deleteUser(Long id) {
 
         User user = entityManager.find(User.class, id);
-        if (user != null){
+        if (user != null) {
             entityManager.remove(user);
         }
     }

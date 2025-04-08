@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
+@RequestMapping
 @Controller
 public class UserController {
 

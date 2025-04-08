@@ -9,8 +9,12 @@ import java.util.List;
 public interface UserDao {
 
     List<User> getAllUsers();
+
     User getUserById(long id);
-    void saveUser(User user);
+
+    User updateUser(User user);
+
     void deleteUser(Long id);
 
+    void createUser(User user);
 }
