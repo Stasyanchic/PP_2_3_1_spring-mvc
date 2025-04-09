@@ -1,7 +1,6 @@
 package web.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,13 +26,14 @@ public class DBConfig {
     @Resource
     private Environment env;
 
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource());
         emf.setPackagesToScan(env.getProperty("db.entity.package", "web.model"));
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        emf.setJpaProperties(getHibernateProperties());
+        emf.setJpaProperties(hibernateProperties());
         return emf;
     }
 
@@ -47,7 +47,7 @@ public class DBConfig {
         return dataSource;
     }
 
-    public Properties getHibernateProperties() {
+    public Properties hibernateProperties() {
         try {
             Properties properties = new Properties();
             InputStream is = getClass().getClassLoader().getResourceAsStream("db.properties");
