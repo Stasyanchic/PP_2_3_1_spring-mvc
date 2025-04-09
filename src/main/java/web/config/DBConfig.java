@@ -33,7 +33,7 @@ public class DBConfig {
         emf.setDataSource(dataSource());
         emf.setPackagesToScan(env.getProperty("db.entity.package", "web.model"));
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        emf.setJpaProperties(hibernateProperties());
+        emf.setJpaProperties(loadHibernateProperties());
         return emf;
     }
 
@@ -47,7 +47,7 @@ public class DBConfig {
         return dataSource;
     }
 
-    public Properties hibernateProperties() {
+    public Properties loadHibernateProperties() {
         try {
             Properties properties = new Properties();
             InputStream is = getClass().getClassLoader().getResourceAsStream("db.properties");
